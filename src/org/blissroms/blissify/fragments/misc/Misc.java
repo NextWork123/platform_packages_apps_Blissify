@@ -16,6 +16,11 @@
 
 package org.blissroms.blissify.fragments.misc;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,6 +31,9 @@ import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.provider.Settings;
 import android.view.View;
+import android.text.TextUtils;
+import android.widget.Toast;
+
 
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -48,10 +56,19 @@ import java.util.List;
 public class Misc extends SettingsPreferenceFragment implements
         Preference.OnPreferenceChangeListener {
 
+    private static final String KEY_GAMES_SPOOF = "use_games_spoof";
+    private static final String SYS_GAMES_SPOOF = "persist.sys.pixelprops.games";
+
+    private SwitchPreference mGamesSpoof;
+
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         addPreferencesFromResource(R.xml.blissify_misc);
+
+        mGamesSpoof = (SwitchPreference) findPreference(KEY_GAMES_SPOOF);
+        mGamesSpoof.setChecked(SystemProperties.getBoolean(SYS_GAMES_SPOOF, false));
+        mGamesSpoof.setOnPreferenceChangeListener(this);
     }
 
     @Override
@@ -61,6 +78,11 @@ public class Misc extends SettingsPreferenceFragment implements
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (preference == mGamesSpoof) {
+            boolean value = (Boolean) newValue;
+            SystemProperties.set(SYS_GAMES_SPOOF, value ? "true" : "false");
+            return true;
+        }
         return false;
     }
 

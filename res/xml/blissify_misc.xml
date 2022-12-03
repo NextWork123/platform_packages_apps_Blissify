@@ -15,6 +15,12 @@
             android:summary="@string/usb_default_config_summary"
             android:fragment="com.android.settings.connecteddevice.usb.UsbDefaultFragment" />
 
+        <!-- Unlock FPS for specific games -->
+        <SwitchPreference
+          android:key="use_games_spoof"
+          android:title="@string/use_games_spoof_title"
+          android:summary="@string/use_games_spoof_summary" />
+
 	<com.bliss.support.preferences.SystemSettingSwitchPreference
             android:key="wake_when_plugged_or_unplugged"
             android:title="@string/wake_on_plug_title"
